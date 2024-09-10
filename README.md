@@ -8,7 +8,7 @@
 > 这个库仅只支持OpenGL
 
 ## 构建
-> 构建在bin文件夹中
+> 构建产物在bin文件夹中
 ### Linux 
 > [!CAUTION]
 > 仅支持在WSL2中构建
