@@ -4,12 +4,13 @@ project (fsr2_java_lib)
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3 -Wall -g")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -Wall -g")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -g")
-add_definitions(-D_DEBUG)
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
     add_definitions(-DON_LINUX)
     add_definitions(-DFFX_GCC)
 
 endif()
+MESSAGE( STATUS "${CMAKE_SYSTEM_NAME}")
+
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
 find_library(LIB_NVML nvidia-ml ${PROJECT_BINARY_DIR}/../lib)
