@@ -15,3 +15,4 @@ build/
 bin/
 tools/test.ipynb
 .vscode/
+.vs/

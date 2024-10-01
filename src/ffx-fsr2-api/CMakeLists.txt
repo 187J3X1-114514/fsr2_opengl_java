@@ -23,8 +23,8 @@ cmake_minimum_required(VERSION 3.15)
 set(CMAKE_DEBUG_POSTFIX d)
 option (FFX_FSR2_API_GL "Build FSR 2.0 OpenGL backend" ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3 -Wall -g")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -Wall -g")
 
 set(FSR2_AUTO_COMPILE_SHADERS ON CACHE BOOL "Compile shaders automatically as a prebuild step.")
 
@@ -38,10 +38,10 @@ set(FSR2_PLATFORM_NAME x64)
 if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
     add_compile_definitions(FFX_GCC) # Should work with gcc and others
 endif()
-# Embed PDBs in the debug versions of the libs
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Z7")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_HOME_DIRECTORY}/bin/ffx_fsr2_api/)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_HOME_DIRECTORY}/bin/ffx_fsr2_api/)
+## Embed PDBs in the debug versions of the libs
+#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Z7")
+#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_HOME_DIRECTORY}/bin)
+#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_HOME_DIRECTORY}/bin)
 
 add_compile_definitions(_UNICODE)
 add_compile_definitions(UNICODE)

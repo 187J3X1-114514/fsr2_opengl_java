@@ -23,8 +23,8 @@
 set(FFX_SC_GL_BASE_ARGS
     -compiler=glslang -e main --target-env opengl --target-env spirv1.3 --amb --stb comp 8 --ssb comp 8 --sib comp 0 --suavb comp 0 -Os -S comp -DFFX_GLSL=1)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3 -g -Wall")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -g -Wall")
 
 file(GLOB SHADERS
     "${CMAKE_CURRENT_SOURCE_DIR}/../shaders/*.h"
@@ -47,7 +47,9 @@ file(GLOB_RECURSE GL
 
 add_library(ffx_fsr2_api_gl_${FSR2_PLATFORM_NAME} SHARED ${GL})
 
-find_package(OpenGL REQUIRED)
+find_library(LOG_LIBRARY LOG)
+find_library(OPENGL_ES3_LIBRARY OpenGL ES3)
+#find_library(OpenGL REQUIRED)
 
 target_include_directories(ffx_fsr2_api_gl_${FSR2_PLATFORM_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/../shaders/gl)
 

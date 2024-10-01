@@ -1,11 +1,14 @@
+cmake_minimum_required(VERSION 3.15)
 project (fsr2_java_lib)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3  -Wall")
-
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3 -Wall -g")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -Wall -g")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -g")
+add_definitions(-D_DEBUG)
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
     add_definitions(-DON_LINUX)
     add_definitions(-DFFX_GCC)
+
 endif()
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
@@ -38,8 +41,6 @@ set_target_properties(lib_shared PROPERTIES OUTPUT_NAME "fsr2javalib")
 
 
 target_link_libraries(lib_shared  ${LIB_NVML} ${LIB_FSR2_GL} ${LIB_FSR2_API})
-
-
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
 
