@@ -42,6 +42,7 @@ static const FfxErrorCode FFX_ERROR_OUT_OF_RANGE            = 0x8000000b;  ///< 
 static const FfxErrorCode FFX_ERROR_NULL_DEVICE             = 0x8000000c;  ///< The operation failed because a device was null.
 static const FfxErrorCode FFX_ERROR_BACKEND_API_ERROR       = 0x8000000d;  ///< The operation failed because the backend API returned an error code.
 static const FfxErrorCode FFX_ERROR_INSUFFICIENT_MEMORY     = 0x8000000e;  ///< The operation failed because there was not enough memory.
+static const FfxErrorCode FFX_ERROR_GL_KHR_shader_subgroup     = 0x7000000e;
 
 /// Helper macro to return error code y from a function when a specific condition, x, is not met.
 #define FFX_RETURN_ON_ERROR(x, y)                   \

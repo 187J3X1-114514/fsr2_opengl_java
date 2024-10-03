@@ -29,6 +29,7 @@
 #include <cstdlib>
 #include <codecvt>
 #include <locale>
+#include "../../../include/utils.h"
 
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
@@ -674,7 +675,7 @@ FfxErrorCode GetDeviceCapabilitiesGL(FfxFsr2Interface *backendInterface, FfxDevi
 
 	if (!subgroupSupported)
 	{
-		return FFX_ERROR_BACKEND_API_ERROR; // GL_KHR_shader_subgroup is required
+		return FFX_ERROR_GL_KHR_shader_subgroup; // GL_KHR_shader_subgroup is required
 	}
 
 	GLint subgroupSize = FSR2_DEFAULT_SUBGROUP_SIZE;

@@ -21,9 +21,9 @@ JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper
 /*
  * Class:     io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper
  * Method:    ffxFsr2CreateGL
- * Signature: (IFIII)I
+ * Signature: (IFIII)[I
  */
-JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_ffxFsr2CreateGL
+JNIEXPORT jintArray JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_ffxFsr2CreateGL
   (JNIEnv *, jobject, jint, jfloat, jint, jint, jint);
 
 /*
@@ -36,18 +36,10 @@ JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper
 
 /*
  * Class:     io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper
- * Method:    getGPUInfoNV
+ * Method:    getVersionInfo
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_getGPUInfoNV
-  (JNIEnv *, jobject);
-
-/*
- * Class:     io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper
- * Method:    getGPUInfoAMD
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_getGPUInfoAMD
+JNIEXPORT jstring JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_getVersionInfo
   (JNIEnv *, jobject);
 
 /*

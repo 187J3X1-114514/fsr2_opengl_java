@@ -472,7 +472,6 @@ static FfxErrorCode fsr2Create(FfxFsr2Context_Private *context, const FfxFsr2Con
     // Create the device.
     FfxErrorCode errorCode = context->contextDescription.callbacks.fpCreateBackendContext(&context->contextDescription.callbacks, context->device);
     FFX_RETURN_ON_ERROR(errorCode == FFX_OK, errorCode);
-
     // call out for device caps.
     errorCode = context->contextDescription.callbacks.fpGetDeviceCapabilities(&context->contextDescription.callbacks, &context->deviceCapabilities, context->device);
     FFX_RETURN_ON_ERROR(errorCode == FFX_OK, errorCode);

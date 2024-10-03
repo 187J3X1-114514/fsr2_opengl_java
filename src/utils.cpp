@@ -41,6 +41,7 @@ GLFWglproc java_glfwGetProcAddress(const char *name)
     return 0;
 }
 
+/*
 using namespace std;
 
 char *get_gpu_info_nv()
@@ -100,7 +101,7 @@ char *get_gpu_info_nv()
     nvmlShutdown();
     return (char *)jsonString.c_str();
 }
-
+*/
 bool ToCppBool(jboolean value)
 {
     return value == JNI_TRUE;

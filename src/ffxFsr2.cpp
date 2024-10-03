@@ -1,4 +1,6 @@
-#include "io_homo_superresolution_fsr2_nativelib_ffx_fsr2_api.h"
+#define VES "0.0.2"
+
+#include "io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper.h"
 #include "ffx-fsr2-api/ffx_fsr2.h"
 #include "ffx-fsr2-api/gl/ffx_fsr2_gl.h"
 #include "ffx-fsr2-api/ffx_error.h"
@@ -6,7 +8,6 @@
 #include <memory>
 #include "glfw3.h"
 #include "utils.h"
-
 bool fsr2FirstInit = true;
 FfxFsr2Context fsr2Context;
 std::unique_ptr<char[]> fsr2ScratchMemory;
@@ -20,7 +21,7 @@ static void check_env(JNIEnv *env)
     set_env(env);
 }
 
-JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_ffxFsr2CreateGL(JNIEnv *env, jobject, jint scratchMemorySize, jfloat fsr2Ratio, jint width, jint height, jint flags)
+JNIEXPORT jintArray JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_ffxFsr2CreateGL(JNIEnv *env, jobject, jint scratchMemorySize, jfloat fsr2Ratio, jint width, jint height, jint flags)
 {
     if (!fsr2FirstInit)
     {
@@ -48,10 +49,13 @@ JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper
         java_log(cstr, 0);
     };
     fsr2ScratchMemory = std::make_unique<char[]>(ffxFsr2GetScratchMemorySizeGL());
-    ffxFsr2GetInterfaceGL(&contextDesc.callbacks, fsr2ScratchMemory.get(), ffxFsr2GetScratchMemorySizeGL(), java_glfwGetProcAddress);
-    FfxErrorCode code = ffxFsr2ContextCreate(&fsr2Context, &contextDesc);
-    java_log("FSR_CPP ffxFsr2CreateGL", 0);
-    return static_cast<int>(code);
+    FfxErrorCode code1 = ffxFsr2GetInterfaceGL(&contextDesc.callbacks, fsr2ScratchMemory.get(), ffxFsr2GetScratchMemorySizeGL(), java_glfwGetProcAddress);
+    FfxErrorCode code2 = ffxFsr2ContextCreate(&fsr2Context, &contextDesc);
+    java_log("FSR2_CPP ffxFsr2CreateGL",0);
+    jint code_c[] = {code1,code2};
+    jintArray outJNIArray = (env)->NewIntArray(2);
+    (env)->SetIntArrayRegion(outJNIArray, 0 , 2, code_c);
+    return outJNIArray;
 }
 JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_ffxFsr2GetScratchMemorySizeGL(JNIEnv *env, jobject)
 {
@@ -148,3 +152,8 @@ JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper
     ffxResourceJavaToCpp(env, j);
     return 0;
 };
+
+JNIEXPORT jstring JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_getVersionInfo
+  (JNIEnv *env, jobject){
+     return (env)->NewStringUTF(VES);
+  }
