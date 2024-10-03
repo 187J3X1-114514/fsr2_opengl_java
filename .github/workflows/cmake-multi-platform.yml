@@ -39,15 +39,12 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-
-      
-    - name: Configure CMake
-      run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -S ${{ github.workspace }} -G"MinGW Makefiles" || (exit /B 0)
-
-    - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} || (exit /B 0)
-    - name: Configure CMake2
+    - name: Configure CMake(FSR2)
       run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -S ${{ github.workspace }} -G"MinGW Makefiles"
-    - name: Build2
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+    - name: Build(FSR2)
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -- -i
+    - name: Configure CMake(api)
+      run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -S ${{ github.workspace }} -G"MinGW Makefiles" -DIGLIBFSR2API=ON
+    - name: Build(api)
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -DIGLIBFSR2API=ON
             
