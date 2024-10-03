@@ -13,13 +13,11 @@ MESSAGE( STATUS "${CMAKE_SYSTEM_NAME}")
 
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
-find_library(LIB_NVML nvidia-ml ${PROJECT_BINARY_DIR}/../lib)
 find_library(LIB_FSR2_GL ffx_fsr2_api_gl_x64 ${PROJECT_BINARY_DIR}/../bin)
 find_library(LIB_FSR2_API ffx_fsr2_api_x64 ${PROJECT_BINARY_DIR}/../bin)
 set(FFX_SC_EXECUTABLE
     ${CMAKE_CURRENT_SOURCE_DIR}/tools/FidelityFX_SC.sh)
 else()
-find_library(LIB_NVML nvml ${PROJECT_BINARY_DIR}/../lib)
 find_library(LIB_FSR2_GL libffx_fsr2_api_gl_x64 ${PROJECT_BINARY_DIR}/../bin)
 find_library(LIB_FSR2_API libffx_fsr2_api_x64 ${PROJECT_BINARY_DIR}/../bin)
 set(FFX_SC_EXECUTABLE
@@ -40,8 +38,9 @@ add_library(lib_shared SHARED ${ALL_SRC})
 add_dependencies(lib_shared ffx_fsr2_api_gl_x64 ffx_fsr2_api_x64)
 set_target_properties(lib_shared PROPERTIES OUTPUT_NAME "fsr2javalib")
 
-
-target_link_libraries(lib_shared  ${LIB_NVML} ${LIB_FSR2_GL} ${LIB_FSR2_API})
+if(IGLIBFSR2API)
+    target_link_libraries(lib_shared ${LIB_FSR2_GL} ${LIB_FSR2_API})
+endif()
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
 

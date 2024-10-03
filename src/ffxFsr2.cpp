@@ -63,17 +63,6 @@ JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper
     return static_cast<int>(ffxFsr2GetScratchMemorySizeGL());
 }
 
-JNIEXPORT jstring JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_getGPUInfoNV(JNIEnv *env, jobject)
-{
-    check_env(env);
-    return env->NewStringUTF(get_gpu_info_nv());
-};
-
-JNIEXPORT jstring JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_getGPUInfoAMD(JNIEnv *env, jobject)
-{
-    check_env(env);
-    return env->NewStringUTF("");
-};
 JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_ffxFsr2ContextDispatch(
     JNIEnv *env,
     jobject,

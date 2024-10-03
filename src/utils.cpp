@@ -1,10 +1,7 @@
 #include "utils.h"
-#include "nvml.h"
-#include "json.hpp"
 #include <iostream>
 #include <vector>
 #include "ffx-fsr2-api/ffx_types.h"
-using json = nlohmann::json;
 
 JNIEnv *cur_env;
 void set_env(JNIEnv *env)

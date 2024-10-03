@@ -8,7 +8,6 @@
 
 void java_log(const char* msg,int level);
 void set_env(JNIEnv * env);
-char* get_gpu_info_nv();
 JNIEnv* get_env();
 GLFWglproc java_glfwGetProcAddress(const char* name);
 bool ToCppBool(jboolean value);
