@@ -47,4 +47,11 @@ jobs:
       run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -S ${{ github.workspace }} -G"MinGW Makefiles" -DIGLIBFSR2API=ON
     - name: Build(api)
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: fsr2api-win64
+        path: ${{ steps.strings.outputs.build-output-dir }}/../bin
+        retention-days: 80
+          
             
