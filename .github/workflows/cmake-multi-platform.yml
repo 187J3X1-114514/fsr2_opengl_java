@@ -51,7 +51,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: fsr2api-win64
-        path: ${{ steps.strings.outputs.build-output-dir }}/../bin
+        path: ${{ github.workspace }}/bin
         retention-days: 80
           
             
