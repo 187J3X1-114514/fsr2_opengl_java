@@ -46,5 +46,5 @@ jobs:
     - name: Configure CMake(api)
       run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -S ${{ github.workspace }} -G"MinGW Makefiles" -DIGLIBFSR2API=ON
     - name: Build(api)
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -DIGLIBFSR2API=ON
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
             
