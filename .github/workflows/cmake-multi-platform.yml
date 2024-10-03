@@ -42,25 +42,12 @@ jobs:
 
       
     - name: Configure CMake
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
-        -G"MinGW Makefiles" || true
+      run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -S ${{ github.workspace }} -G"MinGW Makefiles" || (exit /B 0)
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} || (exit /B 0)
     - name: Configure CMake2
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
-        -G"MinGW Makefiles" || true
-
+      run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -S ${{ github.workspace }} -G"MinGW Makefiles"
     - name: Build2
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
             
