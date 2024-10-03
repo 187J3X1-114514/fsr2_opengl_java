@@ -50,6 +50,7 @@ mingw32-make
 
 ## TODO
 
+* 实现将OPENGL的帧缓冲区以最低的性能损耗同步到VK以实现FSR2与FSR3的原生支持
 * 将大部分C++类型转换为Java类型
 * 支持Android系统
 
