@@ -14,11 +14,13 @@ MESSAGE( STATUS "${CMAKE_SYSTEM_NAME}")
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
 find_library(LIB_FSR2_GL ffx_fsr2_api_gl_x64 ${PROJECT_BINARY_DIR}/../bin)
+find_library(LIB_FSR2_VK ffx_fsr2_api_vk_x64 ${PROJECT_BINARY_DIR}/../bin)
 find_library(LIB_FSR2_API ffx_fsr2_api_x64 ${PROJECT_BINARY_DIR}/../bin)
 set(FFX_SC_EXECUTABLE
     ${CMAKE_CURRENT_SOURCE_DIR}/tools/FidelityFX_SC.sh)
 else()
 find_library(LIB_FSR2_GL libffx_fsr2_api_gl_x64 ${PROJECT_BINARY_DIR}/../bin)
+find_library(LIB_FSR2_VK ffx_fsr2_api_vk_x64 ${PROJECT_BINARY_DIR}/../bin)
 find_library(LIB_FSR2_API libffx_fsr2_api_x64 ${PROJECT_BINARY_DIR}/../bin)
 set(FFX_SC_EXECUTABLE
     ${CMAKE_CURRENT_SOURCE_DIR}/tools/FidelityFX_SC.exe)
@@ -35,11 +37,11 @@ find_package(OpenGL REQUIRED)
 aux_source_directory(${PROJECT_BINARY_DIR}/../src ALL_SRC)
 
 add_library(lib_shared SHARED ${ALL_SRC})
-add_dependencies(lib_shared ffx_fsr2_api_gl_x64 ffx_fsr2_api_x64)
+add_dependencies(lib_shared ffx_fsr2_api_gl_x64 ffx_fsr2_api_vk_x64 ffx_fsr2_api_x64)
 set_target_properties(lib_shared PROPERTIES OUTPUT_NAME "fsr2javalib")
 
 if(IGLIBFSR2API)
-    target_link_libraries(lib_shared ${LIB_FSR2_GL} ${LIB_FSR2_API})
+    target_link_libraries(lib_shared ${LIB_FSR2_GL} ${LIB_FSR2_VK} ${LIB_FSR2_API})
 endif()
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
