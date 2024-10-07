@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 #include "ffx-fsr2-api/ffx_types.h"
+#define JAVA_CPPHELPER_CLASS "io/homo/superresolution/upscale/CPPHelper"
+
 
 JNIEnv *cur_env;
 void set_env(JNIEnv *env)
@@ -16,7 +18,7 @@ JNIEnv *get_env()
 
 void java_log(const char *msg, int level)
 {
-    jclass cpp_helper = cur_env->FindClass("io/homo/superresolution/fsr2/CPPHelper");
+    jclass cpp_helper = cur_env->FindClass(JAVA_CPPHELPER_CLASS);
     jmethodID methodID = cur_env->GetStaticMethodID(cpp_helper, "CPP_Log", "(Ljava/lang/String;I)V");
     jstring jmsg = cur_env->NewStringUTF(msg);
     cur_env->CallStaticVoidMethod(cpp_helper, methodID, jmsg, jint(level));
@@ -25,7 +27,7 @@ void java_log(const char *msg, int level)
 
 GLFWglproc java_glfwGetProcAddress(const char *name)
 {
-    jclass cpp_helper = cur_env->FindClass("io/homo/superresolution/fsr2/CPPHelper");
+    jclass cpp_helper = cur_env->FindClass(JAVA_CPPHELPER_CLASS);
     jmethodID methodID = cur_env->GetStaticMethodID(cpp_helper, "CPP_glfwGetProcAddress", "(Ljava/lang/String;)J");
     if (methodID)
     {

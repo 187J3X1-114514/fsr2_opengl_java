@@ -1,6 +1,6 @@
 #define VES "0.0.2"
 
-#include "io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper.h"
+#include "io_homo_superresolution_upscale_NativeApiHelper.h"
 #include "ffx-fsr2-api/ffx_fsr2.h"
 #include "ffx-fsr2-api/gl/ffx_fsr2_gl.h"
 #include "ffx-fsr2-api/ffx_error.h"
@@ -21,7 +21,7 @@ static void check_env(JNIEnv *env)
     set_env(env);
 }
 
-JNIEXPORT jintArray JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_ffxFsr2CreateGL(JNIEnv *env, jobject, jint scratchMemorySize, jfloat fsr2Ratio, jint width, jint height, jint flags)
+JNIEXPORT jintArray JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxFsr2CreateGL(JNIEnv *env, jobject, jint scratchMemorySize, jfloat fsr2Ratio, jint width, jint height, jint flags)
 {
     if (!fsr2FirstInit)
     {
@@ -31,7 +31,7 @@ JNIEXPORT jintArray JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiH
     unsigned int renderWidth = static_cast<unsigned int>(width / fsr2Ratio);
     unsigned int renderHeight = static_cast<unsigned int>(height / fsr2Ratio);
     FfxFsr2ContextDescription contextDesc = {};
-    contextDesc.flags = static_cast<unsigned int>(flags);
+    contextDesc.flags = flags;
     contextDesc.maxRenderSize = {renderWidth, renderHeight};
     contextDesc.displaySize = {static_cast<unsigned int>(width), static_cast<unsigned int>(height)};
     contextDesc.callbacks = {};
@@ -51,19 +51,19 @@ JNIEXPORT jintArray JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiH
     fsr2ScratchMemory = std::make_unique<char[]>(ffxFsr2GetScratchMemorySizeGL());
     FfxErrorCode code1 = ffxFsr2GetInterfaceGL(&contextDesc.callbacks, fsr2ScratchMemory.get(), ffxFsr2GetScratchMemorySizeGL(), java_glfwGetProcAddress);
     FfxErrorCode code2 = ffxFsr2ContextCreate(&fsr2Context, &contextDesc);
-    java_log("FSR2_CPP ffxFsr2CreateGL",0);
-    jint code_c[] = {code1,code2};
+    java_log("FSR2_CPP ffxFsr2CreateGL", 0);
+    jint code_c[] = {code1, code2};
     jintArray outJNIArray = (env)->NewIntArray(2);
-    (env)->SetIntArrayRegion(outJNIArray, 0 , 2, code_c);
+    (env)->SetIntArrayRegion(outJNIArray, 0, 2, code_c);
     return outJNIArray;
 }
-JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_ffxFsr2GetScratchMemorySizeGL(JNIEnv *env, jobject)
+JNIEXPORT jint JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxFsr2GetScratchMemorySizeGL(JNIEnv *env, jobject)
 {
     check_env(env);
     return static_cast<int>(ffxFsr2GetScratchMemorySizeGL());
 }
 
-JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_ffxFsr2ContextDispatch(
+JNIEXPORT jint JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxFsr2ContextDispatch(
     JNIEnv *env,
     jobject,
     jobject color,
@@ -125,24 +125,40 @@ JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper
     return static_cast<int>(err);
 }
 
-JNIEXPORT jobject JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_ffxGetTextureResourceGL(JNIEnv *env, jobject, jlong texGL, jint width, jint height, jint type)
+JNIEXPORT jobject JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxGetTextureResourceGL(JNIEnv *env, jobject, jlong texGL, jint width, jint height, jint type)
 {
     FfxResource resource = ffxGetTextureResourceGL(texGL, width, height, type);
-    jclass javaffxrescls = env->FindClass("io/homo/superresolution/fsr2/types/FfxResource");
+    jclass javaffxrescls = env->FindClass("io/homo/superresolution/upscale/fsr2/types/FfxResource");
     jmethodID constrocMID = env->GetMethodID(javaffxrescls, "<init>", "(IZJIIIIIIII)V");
     jobject javaffxres_ojb = env->NewObject(javaffxrescls, constrocMID, (jint)texGL, resource.isDepth, (jlong)resource.descriptorData, (jint)resource.description.type, (jint)resource.description.format, resource.description.width, resource.description.height, resource.description.depth, resource.description.mipCount, (jint)resource.description.flags, (jint)resource.state);
     return javaffxres_ojb;
 };
 
-JNIEXPORT jint JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_ffxFsr2Test(JNIEnv *env, jobject o)
+JNIEXPORT jint JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxFsr2Test(JNIEnv *env, jobject o)
 {
     check_env(env);
-    jobject j = Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_ffxGetTextureResourceGL(env, o, 0, 1, 1, 0);
+    jobject j = Java_io_homo_superresolution_upscale_NativeApiHelper_ffxGetTextureResourceGL(env, o, 0, 1, 1, 0);
     ffxResourceJavaToCpp(env, j);
     return 0;
 };
 
-JNIEXPORT jstring JNICALL Java_io_homo_superresolution_fsr2_nativelib_FSR2ApiHelper_getVersionInfo
-  (JNIEnv *env, jobject){
-     return (env)->NewStringUTF(VES);
-  }
+JNIEXPORT jstring JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_getVersionInfo(JNIEnv *env, jobject)
+{
+    return (env)->NewStringUTF(VES);
+}
+
+JNIEXPORT jint JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxFsr2GetJitterPhaseCount(JNIEnv *, jobject, jint renderWidth, jint screenWidth)
+{
+    return static_cast<int>(ffxFsr2GetJitterPhaseCount(renderWidth, screenWidth));
+}
+
+JNIEXPORT jfloatArray JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxFsr2GetJitterOffset(JNIEnv *env, jobject, jint frameIndex, jint jitterPhaseCount)
+{
+    float jitterX = 0;
+    float jitterY = 0;
+    ffxFsr2GetJitterOffset(&jitterX, &jitterY, frameIndex, jitterPhaseCount);
+    jfloat jitter_c[] = {jitterX, jitterY};
+    jfloatArray outJNIArray = (env)->NewFloatArray(2);
+    (env)->SetFloatArrayRegion(outJNIArray, 0, 2, jitter_c);
+    return outJNIArray;
+};
