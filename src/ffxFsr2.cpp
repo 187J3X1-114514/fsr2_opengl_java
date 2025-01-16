@@ -1,6 +1,7 @@
-#define VES "0.0.2"
+#define VERSION "0.0.3.2.2.1"
+#define JAVA_FFX_RESOURCE "oiiaio/fsr/fsr2/FfxResource"
 
-#include "io_homo_superresolution_upscale_NativeApiHelper.h"
+#include "oiiaio_fsr_jni.h"
 #include "ffx-fsr2-api/ffx_fsr2.h"
 #include "ffx-fsr2-api/gl/ffx_fsr2_gl.h"
 #include "ffx-fsr2-api/ffx_error.h"
@@ -8,6 +9,8 @@
 #include <memory>
 #include "glfw3.h"
 #include "utils.h"
+
+
 bool fsr2FirstInit = true;
 FfxFsr2Context fsr2Context;
 std::unique_ptr<char[]> fsr2ScratchMemory;
@@ -21,7 +24,7 @@ static void check_env(JNIEnv *env)
     set_env(env);
 }
 
-JNIEXPORT jintArray JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxFsr2CreateGL(JNIEnv *env, jobject, jint scratchMemorySize, jfloat fsr2Ratio, jint width, jint height, jint flags)
+JNIEXPORT jintArray JNICALL Java_oiiaio_fsr_fsr2_FfxFSR2_ffxFsr2CreateGL(JNIEnv *env, jobject, jint scratchMemorySize, jfloat fsr2Ratio, jint width, jint height, jint flags)
 {
     if (!fsr2FirstInit)
     {
@@ -48,8 +51,8 @@ JNIEXPORT jintArray JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper
         cstr[255] = '\0';
         java_log(cstr, 0);
     };
-    fsr2ScratchMemory = std::make_unique<char[]>(ffxFsr2GetScratchMemorySizeGL());
-    FfxErrorCode code1 = ffxFsr2GetInterfaceGL(&contextDesc.callbacks, fsr2ScratchMemory.get(), ffxFsr2GetScratchMemorySizeGL(), java_glfwGetProcAddress);
+    fsr2ScratchMemory = std::make_unique<char[]>(scratchMemorySize);
+    FfxErrorCode code1 = ffxFsr2GetInterfaceGL(&contextDesc.callbacks, fsr2ScratchMemory.get(), scratchMemorySize, java_glfwGetProcAddress);
     FfxErrorCode code2 = ffxFsr2ContextCreate(&fsr2Context, &contextDesc);
     java_log("FSR2_CPP ffxFsr2CreateGL", 0);
     jint code_c[] = {code1, code2};
@@ -57,13 +60,13 @@ JNIEXPORT jintArray JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper
     (env)->SetIntArrayRegion(outJNIArray, 0, 2, code_c);
     return outJNIArray;
 }
-JNIEXPORT jint JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxFsr2GetScratchMemorySizeGL(JNIEnv *env, jobject)
+JNIEXPORT jint JNICALL Java_oiiaio_fsr_fsr2_FfxFSR2_ffxFsr2GetScratchMemorySizeGL(JNIEnv *env, jobject)
 {
     check_env(env);
     return static_cast<int>(ffxFsr2GetScratchMemorySizeGL());
 }
 
-JNIEXPORT jint JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxFsr2ContextDispatch(
+JNIEXPORT jint JNICALL Java_oiiaio_fsr_fsr2_FfxFSR2_ffxFsr2ContextDispatch(
     JNIEnv *env,
     jobject,
     jobject color,
@@ -71,6 +74,7 @@ JNIEXPORT jint JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxF
     jobject motionVectors,
     jobject exposure,
     jobject reactive,
+    jobject transparencyAndComposition,
     jobject output,
     jfloat jitterX,
     jfloat jitterY,
@@ -94,18 +98,13 @@ JNIEXPORT jint JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxF
     check_env(env);
     int renderWidth = renderSizeWidth;
     int renderHeight = renderSizeHeight;
-    FfxResource reactive_tex = {};
-    // if (reactive != -1) reactive_tex = ffxGetTextureResourceGL(reactive, renderWidth, renderHeight, GL_R8_SNORM);
-    FfxResource exposure_tex = {};
-    // if (exposure != -1) exposure_tex = ffxGetTextureResourceGL(exposure, 1, 1, GL_R32F);
-    FfxResource transparencyAndComposition_tex = {};
     FfxFsr2DispatchDescription dispatchDesc = {};
     dispatchDesc.color = ffxResourceJavaToCpp(env, color);
     dispatchDesc.depth = ffxResourceJavaToCpp(env, depth);
     dispatchDesc.motionVectors = ffxResourceJavaToCpp(env, motionVectors);
-    dispatchDesc.exposure = exposure_tex;
-    dispatchDesc.reactive = reactive_tex;
-    dispatchDesc.transparencyAndComposition = transparencyAndComposition_tex;
+    dispatchDesc.exposure = ffxResourceJavaToCpp(env, exposure);
+    dispatchDesc.reactive = ffxResourceJavaToCpp(env, reactive);
+    dispatchDesc.transparencyAndComposition = ffxResourceJavaToCpp(env, transparencyAndComposition);
     dispatchDesc.output = ffxResourceJavaToCpp(env, output);
     dispatchDesc.jitterOffset = {jitterX, jitterY};
     dispatchDesc.motionVectorScale = {float(static_cast<int>(renderWidth)), float(static_cast<int>(renderHeight))};
@@ -125,34 +124,26 @@ JNIEXPORT jint JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxF
     return static_cast<int>(err);
 }
 
-JNIEXPORT jobject JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxGetTextureResourceGL(JNIEnv *env, jobject, jlong texGL, jint width, jint height, jint type)
+JNIEXPORT jobject JNICALL Java_oiiaio_fsr_fsr2_FfxFSR2_ffxGetTextureResourceGL(JNIEnv *env, jobject, jlong texGL, jint width, jint height, jint type)
 {
     FfxResource resource = ffxGetTextureResourceGL(texGL, width, height, type);
-    jclass javaffxrescls = env->FindClass("io/homo/superresolution/upscale/fsr2/types/FfxResource");
+    jclass javaffxrescls = env->FindClass(JAVA_FFX_RESOURCE);
     jmethodID constrocMID = env->GetMethodID(javaffxrescls, "<init>", "(IZJIIIIIIII)V");
     jobject javaffxres_ojb = env->NewObject(javaffxrescls, constrocMID, (jint)texGL, resource.isDepth, (jlong)resource.descriptorData, (jint)resource.description.type, (jint)resource.description.format, resource.description.width, resource.description.height, resource.description.depth, resource.description.mipCount, (jint)resource.description.flags, (jint)resource.state);
     return javaffxres_ojb;
 };
 
-JNIEXPORT jint JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxFsr2Test(JNIEnv *env, jobject o)
+JNIEXPORT jstring JNICALL Java_oiiaio_fsr_fsr2_FfxFSR2_getVersionInfo(JNIEnv *env, jobject)
 {
-    check_env(env);
-    jobject j = Java_io_homo_superresolution_upscale_NativeApiHelper_ffxGetTextureResourceGL(env, o, 0, 1, 1, 0);
-    ffxResourceJavaToCpp(env, j);
-    return 0;
-};
-
-JNIEXPORT jstring JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_getVersionInfo(JNIEnv *env, jobject)
-{
-    return (env)->NewStringUTF(VES);
+    return (env)->NewStringUTF(VERSION);
 }
 
-JNIEXPORT jint JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxFsr2GetJitterPhaseCount(JNIEnv *, jobject, jint renderWidth, jint screenWidth)
+JNIEXPORT jint JNICALL Java_oiiaio_fsr_fsr2_FfxFSR2_ffxFsr2GetJitterPhaseCount(JNIEnv *, jobject, jint renderWidth, jint screenWidth)
 {
     return static_cast<int>(ffxFsr2GetJitterPhaseCount(renderWidth, screenWidth));
 }
 
-JNIEXPORT jfloatArray JNICALL Java_io_homo_superresolution_upscale_NativeApiHelper_ffxFsr2GetJitterOffset(JNIEnv *env, jobject, jint frameIndex, jint jitterPhaseCount)
+JNIEXPORT jfloatArray JNICALL Java_oiiaio_fsr_fsr2_FfxFSR2_ffxFsr2GetJitterOffset(JNIEnv *env, jobject, jint frameIndex, jint jitterPhaseCount)
 {
     float jitterX = 0;
     float jitterY = 0;

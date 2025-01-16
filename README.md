@@ -4,9 +4,6 @@
 > [!IMPORTANT]
 > 这个库是为了[SuperResolution](https://github.com/187J3X1-114514/superresolution) *(一个Minecraft模组)* 所编写的，可能有些代码不适合直接使用，建议修改后再使用
 
-> [!IMPORTANT]
-> 这个库仅只支持OpenGL
-
 ## 构建
 > 构建产物在bin文件夹中
 ### Linux 
@@ -27,6 +24,8 @@ mkdir build
 cd build
 cmake ..
 make
+cmake .. -DIGLIBFSR2API=ON
+make
 ```
 ### Windows
 需求：
@@ -41,6 +40,8 @@ mkdir build
 cd build
 cmake .. -G"MinGW Makefiles"
 mingw32-make
+cmake .. -G"MinGW Makefiles" -DIGLIBFSR2API=ON
+mingw32-make
 ```
 
 ## 支持的平台
@@ -50,7 +51,7 @@ mingw32-make
 
 ## TODO
 
-* 实现将OPENGL的帧缓冲区以最低的性能损耗同步到VK以实现FSR2与FSR3的原生支持
+* 实现opengl与vulkan互操作，避免FSR2某些神奇的[问题](https://github.com/JuanDiegoMontoya/FidelityFX-FSR2-OpenGL/issues/8)
 * 将大部分C++类型转换为Java类型
 * 支持Android系统
 

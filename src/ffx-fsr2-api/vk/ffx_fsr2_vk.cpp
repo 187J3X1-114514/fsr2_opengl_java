@@ -1345,17 +1345,35 @@ FfxErrorCode CreatePipelineVK(FfxFsr2Interface* backendInterface, FfxFsr2Pass pa
     for (uint32_t srvIndex = 0; srvIndex < outPipeline->srvCount; ++srvIndex)
     {
         outPipeline->srvResourceBindings[srvIndex].slotIndex = shaderBlob.boundSampledImageBindings[srvIndex];
+        #ifdef ON_LINUX
+        wcscpy(outPipeline->srvResourceBindings[srvIndex].name, converter.from_bytes(shaderBlob.boundSampledImageNames[srvIndex]).c_str());
+
+        #else
         wcscpy_s(outPipeline->srvResourceBindings[srvIndex].name, converter.from_bytes(shaderBlob.boundSampledImageNames[srvIndex]).c_str());
+
+        #endif
     }
     for (uint32_t uavIndex = 0; uavIndex < outPipeline->uavCount; ++uavIndex)
     {
         outPipeline->uavResourceBindings[uavIndex].slotIndex = shaderBlob.boundStorageImageBindings[uavIndex];
+        #ifdef ON_LINUX
+        wcscpy(outPipeline->uavResourceBindings[uavIndex].name, converter.from_bytes(shaderBlob.boundStorageImageNames[uavIndex]).c_str());
+
+        #else
         wcscpy_s(outPipeline->uavResourceBindings[uavIndex].name, converter.from_bytes(shaderBlob.boundStorageImageNames[uavIndex]).c_str());
+
+        #endif
     }
     for (uint32_t cbIndex = 0; cbIndex < outPipeline->constCount; ++cbIndex)
     {
         outPipeline->cbResourceBindings[cbIndex].slotIndex = shaderBlob.boundUniformBufferBindings[cbIndex];
+        #ifdef ON_LINUX
+        wcscpy(outPipeline->cbResourceBindings[cbIndex].name, converter.from_bytes(shaderBlob.boundUniformBufferNames[cbIndex]).c_str());
+
+        #else
         wcscpy_s(outPipeline->cbResourceBindings[cbIndex].name, converter.from_bytes(shaderBlob.boundUniformBufferNames[cbIndex]).c_str());
+
+        #endif
     }
 
     // create descriptor set layout
