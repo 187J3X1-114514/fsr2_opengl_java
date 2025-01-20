@@ -24,8 +24,10 @@ set(CMAKE_DEBUG_POSTFIX d)
 option (FFX_FSR2_API_GL "Build FSR 2.0 OpenGL backend" ON)
 option (FFX_FSR2_API_VK "Build FSR 2.0 VK backend" ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3 -Wall -g")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -Wall -g")
+#set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3 -Wall -g")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -Wall -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wall -g")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -g")
 
 set(FSR2_AUTO_COMPILE_SHADERS ON CACHE BOOL "Compile shaders automatically as a prebuild step.")
 

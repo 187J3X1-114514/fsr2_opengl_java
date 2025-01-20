@@ -1,8 +1,8 @@
 # fsr2_opengl_java
-关于FSR2+OpenGL+Java这种抽象组合的库
+FSR2的Java绑定，支持OpenGL和Vulkan
 
 > [!IMPORTANT]
-> 这个库是为了[SuperResolution](https://github.com/187J3X1-114514/superresolution) *(一个Minecraft模组)* 所编写的，可能有些代码不适合直接使用，建议修改后再使用
+> 这个库是为了[SuperResolution](https://github.com/187J3X1-114514/superresolution) *(一个Minecraft模组)* 所编写的，java代码部分[在这](https://github.com/187J3X1-114514/superresolution/tree/1.21.1/common/src/main/java/oiiaio)
 
 ## 构建
 > 构建产物在bin文件夹中
@@ -13,6 +13,7 @@
 需求：
 
 * OpenGL开发环境
+* Vulkan开发环境
 * C/C++开发环境
 * Python
 

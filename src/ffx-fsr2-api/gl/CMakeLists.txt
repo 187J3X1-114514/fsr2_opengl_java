@@ -23,8 +23,10 @@
 set(FFX_SC_GL_BASE_ARGS
     -compiler=glslang -e main --target-env opengl --target-env spirv1.3 --amb --stb comp 8 --ssb comp 8 --sib comp 0 --suavb comp 0 -Os -S comp -DFFX_GLSL=1)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3 -g -Wall")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -g -Wall")
+#set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -O3 -g -Wall")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -g -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -g -Wall")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall")
 
 file(GLOB SHADERS
     "${CMAKE_CURRENT_SOURCE_DIR}/../shaders/*.h"
