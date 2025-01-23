@@ -103,25 +103,25 @@ FfxResource __ffxResourceJavaToCpp(
 
 PFN_vkVoidFunction java_getDeviceProcAddr(VkDevice device, const char *pName)
 {
-    return vkGetDeviceProcAddr(device,pName);
+    return NULL;
 };
 void java_VkGetPhysicalDeviceMemoryProperties(VkPhysicalDevice device, VkPhysicalDeviceMemoryProperties *pMemoryProperties)
 {
-    return vkGetPhysicalDeviceMemoryProperties(device, pMemoryProperties);
+    return;
 };
 void java_VkGetPhysicalDeviceProperties2(VkPhysicalDevice physicalDevice, VkPhysicalDeviceProperties2 *pProperties)
 {
-    return vkGetPhysicalDeviceProperties2(physicalDevice, pProperties);
+    return;
 };
 void java_VkGetPhysicalDeviceFeatures2(VkPhysicalDevice physicalDevice, VkPhysicalDeviceFeatures2 *pFeatures)
 {
-    return vkGetPhysicalDeviceFeatures2(physicalDevice, pFeatures);
+    return;
 };
 VkResult java_VkEnumerateDeviceExtensionProperties(VkPhysicalDevice physicalDevice, const char *pLayerName, uint32_t *pPropertyCount, VkExtensionProperties *pProperties)
 {
-    return vkEnumerateDeviceExtensionProperties(physicalDevice, pLayerName, pPropertyCount, pProperties);
+    return VK_SUCCESS;
 };
 void java_VkGetPhysicalDeviceProperties(VkPhysicalDevice physicalDevice, VkPhysicalDeviceProperties *pProperties)
 {
-    return vkGetPhysicalDeviceProperties(physicalDevice, pProperties);
+    return;
 };
