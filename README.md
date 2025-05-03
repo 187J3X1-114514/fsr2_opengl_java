@@ -2,6 +2,9 @@
 FSR2的Java绑定，支持OpenGL和Vulkan
 
 > [!IMPORTANT]
+> 该存储库已废弃，新位置：[SuperResolution模组存储库](https://github.com/187J3X1-114514/superresolution/tree/multi-version/native)
+
+> [!IMPORTANT]
 > 这个库是为了[SuperResolution](https://github.com/187J3X1-114514/superresolution) *(一个Minecraft模组)* 所编写的，java代码部分[在这](https://github.com/187J3X1-114514/superresolution/tree/1.21.1/common/src/main/java/oiiaio)
 
 ## 构建
